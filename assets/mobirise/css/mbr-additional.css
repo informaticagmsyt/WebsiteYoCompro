@@ -2030,7 +2030,7 @@ body {
 .cid-roNYtKtqRq .full-screen .slider-fullscreen-image {
   min-height: 100vh;
   background-repeat: no-repeat;
-  background-position: 77%;
+  background-position: inherit;
   background-size: cover;
 }
 .cid-roNYtKtqRq .full-screen .slider-fullscreen-image.active {
