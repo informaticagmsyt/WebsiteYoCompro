@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'http://sistema.gobcojedes.gmsaberytrabajo.gob.ve/monitoreo/';
-$config['base_url'] = 'http://localhost/WebsiteGobBolCojedes/monitoreo';
+$config['base_url'] = 'http://localhost/WebsiteYoCompro/monitoreo';
 /*
 |--------------------------------------------------------------------------
 | Index File
