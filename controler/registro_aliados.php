@@ -12,8 +12,6 @@ require 'SMTP.php';
 	$cedula        =  $_POST['cedula'];
 	$nombre	       =  strtoupper($_POST['nombre']);
 	$apellido      =  strtoupper($_POST['apellido']);
-	$sexo          =  strtoupper($_POST['sexo']);
-	$f_nacimiento  =  $_POST['f_nacimiento'];
 /************************************************/
 //Campos que van hacia la tabla contacto
 	$email     =  strtoupper($_POST['email']);
@@ -23,29 +21,16 @@ require 'SMTP.php';
 	$estado     =  $_POST['estado'];
 	$municipio  =  $_POST['municipio'];
 	$parroquia  =  $_POST['parroquia']; 
-	$localidad     =  strtoupper($_POST['localidad']);
-	$n_localidad   =  strtoupper($_POST['n_localidad']);
 	$direccion     =  strtoupper( $_POST['direccion']);
 /************************************************/
-//Campos que van hacia la tabla laboral
-	$trabaja       =  strtoupper($_POST['trabaja']);
-	$g_instruccion =  strtoupper($_POST['g_instruccion']);
-	$profesion     =  strtoupper($_POST['profesion']);
-/************************************************/
-//Campos que van hacia la tabla espacio_politico
-	$e_social    =  strtoupper($_POST['e_social']);
-	$n_social    =  strtoupper($_POST['n_social']);
-	$movimiento  =  strtoupper($_POST['movimiento']); 
-/************************************************/
 //Campos que van hacia la tabla planes_personas
-	$plan=1;// el numero 1 pertenece a el pla de brigadas tecnicas agroalimentarias para saber que ID corresponde a caba plan consulten la tabla planes
+	$plan=1;// el numero 1 pertenece a el plan de solicitudes para saber que ID corresponde a caba plan consulten la tabla planes
 	$hoy = date("j- n-Y");
 /************************************************/
-//Campos que van hacia la tabla solicitud
-	$t_ase      =  strtoupper($_POST['t_asesoramiento']); 
-/************************************************/
-//Campos que van hacia la tabla figura_juridica
-	$r_social   =  strtoupper($_POST['r_social']);
+//Campos que van hacia la tabla comercios
+	$rif   =  strtoupper($_POST['rif']);
+	$nombre_comercio = $_POST['nombre_comercio'];
+	$area_productiva = $_POST['area_productiva'];
 /*************************************************/
 $sql1="SELECT * FROM personas WHERE cedula='$cedula'";
 $query1=pg_query($conexion,$sql1);
@@ -53,7 +38,7 @@ $query1=pg_query($conexion,$sql1);
 		$b=$cedula;
 		$s=$d['cedula'];
 		if (!$s) {
-			$sql="INSERT INTO personas (cedula,nombre,apellido,sexo,f_nacimiento) VALUES ('$cedula','$nombre','$apellido','$sexo','$f_nacimiento') RETURNING cedula";
+			$sql="INSERT INTO personas (cedula,nombre,apellido) VALUES ('$cedula','$nombre','$apellido') RETURNING cedula";
 				$query=pg_query($conexion,$sql);
 					if ($query) {	
 							$sql2="SELECT * FROM personas WHERE cedula='$cedula'";
@@ -63,19 +48,13 @@ $query1=pg_query($conexion,$sql1);
 							//***************************************************************************************************************//
 							$sql3="INSERT INTO contacto (telefono,email,id_persona_contacto) VALUES ('$telefono','$email',$id)";
 								$query3=pg_query($sql3);
-							$sql4="INSERT INTO direccion (estado,municipio,parroquia,localidad,nombre_localidad,direccion_exacta,id_persona_direccion) VALUES ('$estado','$municipio','$parroquia','$localidad','$n_localidad','$direccion',$id)";
+							$sql4="INSERT INTO direccion (estado,municipio,parroquia,direccion_exacta,id_persona_direccion) VALUES ('$estado','$municipio','$parroquia','$direccion',$id)";
 								$query4=pg_query($sql4);
-							$sql5="INSERT INTO laboral (grado_instruccion,profesion_oficio,trabaja,id_persona_laboral) VALUES ('$g_instruccion','$profesion','$trabaja',$id)";
+							$sql5="INSERT INTO planes_personas (key_id_planes,key_id_personas,fecha_registro) VALUES ('$plan','$id','$hoy')";
 								$query5=pg_query($sql5);
-							$sql6="INSERT INTO espacio_politico (e_social,n_social,movimiento,id_persona_espacio) VALUES ('$e_social','$n_social','$movimiento','$id')";
+							$sql6="INSERT INTO comercios (rif,nombre_comercio,area_productiva,id_persona_comercio) VALUES ('$rif','$nombre_comercio','$area_productiva','$id')";
 								$query6=pg_query($sql6);
-							$sql7="INSERT INTO planes_personas (key_id_planes,key_id_personas,fecha_registro) VALUES ('$plan','$id','$hoy')";
-								$query7=pg_query($sql7);
-							$sql8="INSERT INTO solicitud (t_asesoramiento,t_solicitud,id_persona_solicitud) VALUES ('$t_ase','NO APLICA','$id')";
-								$query8=pg_query($sql8);
-							$sql9="INSERT INTO figura_juridica (r_social,id_persona_figura) VALUES ('$r_social','$id')";
-								$query9=pg_query($sql9);
-							if ($query9) {
+							if ($query6) {
 								/*$mail = new PHPMailer(true);
 									try {
 											//Server settings
@@ -100,14 +79,14 @@ $query1=pg_query($conexion,$sql1);
 													echo " Error: {$mail->ErrorInfo}";
 												}*/
 								echo '  <script type="text/javascript">
-								alert("Su RegistroBrigadas de Acompañamiento Técnico y Apoyo a los Proyectos Socio Productivo. Fue Completado con Exito");
+								alert("¡Su registro fue completado con exito!");
 										document.location.href ="../index.html";
 								</script>';				
 							}
 					}				
 	}else{
 			echo '  <script type="text/javascript">
-						alert("Usted ya se encuentra Registrado en uno de Nuestros Planes);
+						alert("¡Usted ya se encuentra registrado!);
 						document.location.href ="../index.html";
 					</script>';	
 		}
